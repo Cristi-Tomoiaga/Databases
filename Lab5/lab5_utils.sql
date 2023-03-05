@@ -1,0 +1,79 @@
+USE WebHosting;
+GO
+
+CREATE OR ALTER FUNCTION uf_Valid_CIF(@cif CHAR(12))
+RETURNS BIT
+AS
+BEGIN
+	IF (@cif IS NULL)
+	BEGIN
+		RETURN 0;
+	END;
+
+	IF (LEN(@cif) = 10 AND SUBSTRING(@cif, 1, LEN(@cif)) NOT LIKE '%[^0-9]%')
+	BEGIN
+		RETURN 1;
+	END;
+
+	IF (LEN(@cif) = 12 AND SUBSTRING(@cif, 1, 2) = 'RO' AND SUBSTRING(@cif, 3, LEN(@cif) - 2) NOT LIKE '%[^0-9]%')
+	BEGIN
+		RETURN 1;
+	END;
+
+	RETURN 0;
+END;
+GO
+
+CREATE OR ALTER FUNCTION uf_Valid_ID(@id INT)
+RETURNS BIT
+AS
+BEGIN
+	IF (@id IS NULL)
+	BEGIN
+		RETURN 0;
+	END;
+
+	IF (@id > 0)
+	BEGIN
+		RETURN 1;
+	END;
+
+	RETURN 0;
+END;
+GO
+
+CREATE OR ALTER FUNCTION uf_Valid_Nume(@nume VARCHAR(100))
+RETURNS BIT
+AS
+BEGIN
+	IF (@nume IS NULL)
+	BEGIN
+		RETURN 0;
+	END;
+
+	IF (LEN(@nume) > 0)
+	BEGIN
+		RETURN 1;
+	END;
+
+	RETURN 0;
+END;
+GO
+
+CREATE OR ALTER FUNCTION uf_Valid_Nota(@nota REAL)
+RETURNS BIT
+AS
+BEGIN
+	IF (@nota IS NULL)
+	BEGIN
+		RETURN 0;
+	END;
+
+	IF (1 <= @nota AND @nota <= 10)
+	BEGIN
+		RETURN 1;
+	END;
+
+	RETURN 0;
+END;
+GO
